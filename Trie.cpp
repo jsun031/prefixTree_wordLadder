@@ -6,7 +6,7 @@ void Trie::dfs(const string& s, int position, string& cur, TrieNode* tmp, vector
 	if (position == s.size()) {
 		ans.push_back(cur);
 		return;
-	}Path
+	}
 	if (s.at(position) != '.') {
 		if (tmp->next[s.at(position) - 'a'] != NULL) {
 			cur += s.at(position);
