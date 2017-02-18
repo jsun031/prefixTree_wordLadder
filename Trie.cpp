@@ -1,30 +1,12 @@
 #include "Trie.h"
 
 // --- private ---
-//If a string exists in trie, return the path of TrieNode; else return an empty path
-vector<TrieNode*> Trie::findPath(const string& s) const {
-	vector<TrieNode*> ans;
-	TrieNode* cur = root;
-	ans.push_back(cur);
-	bool exist = true;
-	for (int i = 0; i < s.size(); i++) {
-		if (cur->next[s.at(i) - 'a'] == NULL) {
-			exist = false;
-			break;
-		}
-		else {
-			cur = cur->next[s.at(i) - 'a'];
-			ans.push_back(cur);
-		}
-	}
-	return exist && cur->end ? ans : vector<TrieNode*>();
-}
 //construct all the neighbors of s in the trie except the origin string with character avoid
 void Trie::dfs(const string& s, int position, string& cur, TrieNode* tmp, vector<string>& ans, char avoid) const {
 	if (position == s.size()) {
 		ans.push_back(cur);
 		return;
-	}
+	}Path
 	if (s.at(position) != '.') {
 		if (tmp->next[s.at(position) - 'a'] != NULL) {
 			cur += s.at(position);
@@ -43,7 +25,7 @@ void Trie::dfs(const string& s, int position, string& cur, TrieNode* tmp, vector
 	}
 }
 //give a string with 1 '.' find all the string that matches it in trie except the original one
-bool Trie::findWord(const string& s, vector<string>& ans, char avoid) const {
+bool Trie::findAllWord(const string& s, vector<string>& ans, char avoid) const {
 	string cur;
 	TrieNode* tmp = root;
 	dfs(s, 0, cur, tmp, ans, avoid);
@@ -91,13 +73,31 @@ string Trie::front() const {
 	}
 	return ans;
 }
+//If a string exists in trie, return the path of TrieNode; else return an empty path
+vector<TrieNode*> Trie::findWord(const string& s) const {
+	vector<TrieNode*> ans;
+	TrieNode* cur = root;
+	ans.push_back(cur);
+	bool exist = true;
+	for (int i = 0; i < s.size(); i++) {
+		if (cur->next[s.at(i) - 'a'] == NULL) {
+			exist = false;
+			break;
+		}
+		else {
+			cur = cur->next[s.at(i) - 'a'];
+			ans.push_back(cur);
+		}
+	}
+	return exist && cur->end ? ans : vector<TrieNode*>();
+}
 //give a string find all the string that differs from it only 1 character in trie
 vector<string> Trie::findNeighbor(string& s) const {
 	vector<string> ans;
 	for (int i = 0; i < s.size(); i++) {
 		char a = s.at(i);
 		s[i] = '.';
-		findWord(s, ans, a);
+		findAllWord(s, ans, a);
 		s[i] = a;
 	}
 	return ans;
@@ -137,7 +137,7 @@ void Trie::addWord(const string& word) {
 }
 //delete a word in trie
 void Trie::removeWord(const string& s) {
-	vector<TrieNode*> path = findPath(s);
+	vector<TrieNode*> path = findWord(s);
 	if (path.empty()) {
 		return;
 	}
@@ -168,7 +168,7 @@ void Trie::markNeighbor(const string& s, const vector<string>& words) {
 			j++;
 		}
 		pair<int, char> possibleNeighbor = make_pair(j, s.at(j));
-		vector<TrieNode*> wordPath = findPath(words.at(i));
+		vector<TrieNode*> wordPath = findWord(words.at(i));
 		wordPath.back()->mapWord.push_back(possibleNeighbor);
 	}
 }
