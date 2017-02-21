@@ -45,7 +45,9 @@ Trie::~Trie() {
 	while (!empty()) {
 		removeWord(front());
 	}
-	delete root;
+	if (root != NULL) {
+		delete root;
+	}
 }
 
 // --- constant methods ---
@@ -136,15 +138,21 @@ void Trie::addWord(const string& word) {
 	cur->end = true;
 }
 //delete a word in trie
-void Trie::removeWord(const string& s) {
+void removeWord(const string& s) {
 	vector<TrieNode*> path = findWord(s);
 	if (path.empty()) {
 		return;
-	}
-	else {
+	} else {
 		length--;
 		int last = 0;
-		for (int i = path.size() - 1; i > 0 && last == 0; i--) {
+		path.back()->end = false;
+		for (int j = 0; j < 26; j++) {
+			if (path.back()->next[j] != NULL) {
+				last++;
+				break;
+			}
+		}
+		for (int i = path.size() - 1; i > 0 && last == 0 && path.at(i)->end == false; i--) {
 			if (last == 0) {
 				delete(path.at(i));
 				path.at(i - 1)->next[s.at(i - 1) - 'a'] = NULL;
