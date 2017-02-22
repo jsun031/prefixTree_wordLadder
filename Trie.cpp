@@ -31,8 +31,7 @@ bool Trie::findAllWord(const string& s, vector<string>& ans, char avoid) const {
 	dfs(s, 0, cur, tmp, ans, avoid);
 	if (ans.empty()) {
 		return false;
-	}
-	else {
+	} else {
 		return true;
 	}
 }
@@ -138,7 +137,7 @@ void Trie::addWord(const string& word) {
 	cur->end = true;
 }
 //delete a word in trie
-void removeWord(const string& s) {
+void Trie::removeWord(const string& s) {
 	vector<TrieNode*> path = findWord(s);
 	if (path.empty()) {
 		return;
