@@ -40,9 +40,6 @@ Trie::Trie() {
 	root = new TrieNode();
 }
 Trie::~Trie() {
-	while (!empty()) {
-		removeWord(front());
-	}
 	if (root != NULL) {
 		delete root;
 	}
