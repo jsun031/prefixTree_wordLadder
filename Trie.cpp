@@ -13,8 +13,7 @@ void Trie::dfs(const string& s, int position, string& cur, TrieNode* tmp, vector
 			dfs(s, position + 1, cur, tmp->next[s.at(position) - 'a'], ans, avoid);
 			cur.pop_back();
 		}
-	}
-	else {
+	} else {
 		for (int i = 0; i < 26; i++) {
 			if (i != avoid - 'a' && tmp->next[i] != NULL) {
 				cur += 'a' + i;
@@ -84,8 +83,7 @@ vector<TrieNode*> Trie::findWord(const string& s) const {
 		if (cur->next[s.at(i) - 'a'] == NULL) {
 			exist = false;
 			break;
-		}
-		else {
+		} else {
 			cur = cur->next[s.at(i) - 'a'];
 			ans.push_back(cur);
 		}
